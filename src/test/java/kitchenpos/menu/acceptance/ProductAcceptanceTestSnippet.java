@@ -1,16 +1,14 @@
-package kitchenpos.product.acceptance;
+package kitchenpos.menu.acceptance;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kitchenpos.product.domain.Product;
-import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static org.apache.http.HttpHeaders.LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -40,7 +38,6 @@ public class ProductAcceptanceTestSnippet {
         Product createdProduct = response.as(Product.class);
 
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
-        assertThat(response.header(LOCATION)).isNotBlank();
         assertThat(createdProduct).isEqualTo(creatingProduct);
     }
 
