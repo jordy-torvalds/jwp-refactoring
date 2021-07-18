@@ -1,9 +1,12 @@
 package kitchenpos.menu.fixture;
 
 import kitchenpos.menu.domain.MenuProduct;
+import kitchenpos.menu.dto.MenuProductRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static kitchenpos.product.fixture.ProductFixture.*;
 

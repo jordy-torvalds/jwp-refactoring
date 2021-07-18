@@ -1,6 +1,11 @@
 package kitchenpos.menu.fixture;
 
 import kitchenpos.menu.domain.Menu;
+import kitchenpos.menu.domain.MenuProduct;
+import kitchenpos.menu.dto.MenuRequest;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import static java.math.BigDecimal.valueOf;
 import static java.util.Arrays.asList;

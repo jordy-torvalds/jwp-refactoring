@@ -1,7 +1,5 @@
 package kitchenpos.utils;
 
-import java.util.function.Supplier;
-
 public class ResponseTransferObject <T> {
     private T value;
 
