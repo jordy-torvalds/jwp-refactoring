@@ -3,16 +3,12 @@ package kitchenpos.menu.acceptance;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import kitchenpos.menu.domain.Menu;
-import kitchenpos.menu.domain.MenuGroup;
 import kitchenpos.menu.dto.MenuGroupRequest;
 import kitchenpos.menu.dto.MenuGroupResponse;
-import kitchenpos.product.domain.Product;
-import kitchenpos.utils.ResponseTransferObject;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.apache.http.HttpHeaders.LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,13 +17,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class MenuGroupAcceptanceTestSnippet {
 
-    public static Executable 메뉴그룹_등록_요청_및_성공_확인(MenuGroupRequest creatingMenuGroup, ResponseTransferObject<MenuGroupResponse> menuGroupRTO) {
+    public static Supplier<MenuGroupResponse> 메뉴그룹_등록_요청_및_성공_확인(MenuGroupRequest creatingMenuGroup) {
         return () -> {
             ExtractableResponse<Response> response = 메뉴그룹_등록_요청(creatingMenuGroup);
 
             메뉴그룹이_등록됨(response, creatingMenuGroup);
 
-            menuGroupRTO.change(response.as(MenuGroupResponse.class));
+            return response.as(MenuGroupResponse.class);
         };
     }
 
@@ -51,11 +47,13 @@ public class MenuGroupAcceptanceTestSnippet {
     }
 
 
-    public static Executable 메뉴그룹_조회_요청_및_성공_확인(List<MenuGroupResponse> expectedMenuGroups) {
+    public static Supplier<List<MenuGroupResponse>> 메뉴그룹_조회_요청_및_성공_확인(List<MenuGroupResponse> expectedMenuGroups) {
         return () -> {
             ExtractableResponse<Response> response = 메뉴그룹_조회_요청();
 
             메뉴그룹이_조회됨(response, expectedMenuGroups);
+
+            return response.jsonPath().getList(".", MenuGroupResponse.class);
         };
     }
 

@@ -4,7 +4,6 @@ import kitchenpos.AcceptanceTest;
 import kitchenpos.menu.dto.*;
 import kitchenpos.product.dto.ProductRequest;
 import kitchenpos.product.dto.ProductResponse;
-import kitchenpos.utils.ResponseTransferObject;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -27,51 +26,45 @@ class MenuAcceptanceTest extends AcceptanceTest {
         super.setUp();
     }
 
-    private ResponseTransferObject<ProductResponse> RTO_상품_후라이드_치킨 = new ResponseTransferObject<>();
-    private ResponseTransferObject<ProductResponse> RTO_상품_양념_치킨 = new ResponseTransferObject<>();
-    private ResponseTransferObject<MenuGroupResponse> RTO_메뉴그룹_치킨류 = new ResponseTransferObject<>();
-    private ResponseTransferObject<MenuResponse> RTO_메뉴_후라이드_양념치킨_두마리_세트 = new ResponseTransferObject<>();
-    private ResponseTransferObject<MenuResponse> RTO_메뉴_후라이드_치킨_두마리_세트 = new ResponseTransferObject<>();
-
     @DisplayName("메뉴를 관리한다")
     @Test
     void manageMenu() throws Throwable {
         // given
-        상품_등록_요청_및_성공_확인(new ProductRequest(상품_후라이드_치킨.getName(), 상품_후라이드_치킨.getPrice()), RTO_상품_후라이드_치킨).execute();
+        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_후라이드_치킨.getName(), 상품_후라이드_치킨.getPrice())).get();
 
         // given
-        상품_등록_요청_및_성공_확인(new ProductRequest(상품_양념_치킨.getName(), 상품_양념_치킨.getPrice()), RTO_상품_양념_치킨).execute();
+        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_양념_치킨.getName(), 상품_양념_치킨.getPrice())).get();
 
         // given
-        메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()), RTO_메뉴그룹_치킨류).execute();
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName())).get();
 
         // given
         MenuProductRequests 메뉴상품_후라이드_양념치킨_두마리_세트 =
-                MenuProductRequests.of(asList(RTO_상품_후라이드_치킨.get().getId(), RTO_상품_양념_치킨.get().getId()),
+                MenuProductRequests.of(asList(응답_상품_후라이드_치킨.getId(), 응답_상품_양념_치킨.getId()),
                 asList(1L, 1L));
 
         // given
         MenuProductRequests 메뉴상품_후라이드_치킨_두마리_세트 =
-                MenuProductRequests.of(asList(RTO_상품_후라이드_치킨.get().getId()),
+                MenuProductRequests.of(asList(응답_상품_후라이드_치킨.getId()),
                         asList(2L));
 
         // given
         MenuRequest 요청_메뉴_후라이드_양념치킨_두마리_세트 =
-                new MenuRequest("후라이드 양념치킨 두마리 세트", valueOf(36_000), RTO_메뉴그룹_치킨류.get().getId(), 메뉴상품_후라이드_양념치킨_두마리_세트.get());
+                new MenuRequest("후라이드 양념치킨 두마리 세트", valueOf(36_000), 응답_메뉴그룹_치킨류.getId(), 메뉴상품_후라이드_양념치킨_두마리_세트.get());
         // given
         MenuRequest 요청_메뉴_후라이드_치킨_두마리_세트 =
-                new MenuRequest("후라이드 두마리 세트", valueOf(36_000), RTO_메뉴그룹_치킨류.get().getId(), 메뉴상품_후라이드_치킨_두마리_세트.get());
+                new MenuRequest("후라이드 두마리 세트", valueOf(36_000), 응답_메뉴그룹_치킨류.getId(), 메뉴상품_후라이드_치킨_두마리_세트.get());
 
         // when, then
-        메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_양념치킨_두마리_세트, RTO_메뉴_후라이드_양념치킨_두마리_세트).execute();
+        MenuResponse 응답_메뉴_후라이드_양념치킨_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_양념치킨_두마리_세트).get();
 
         // when, then
-        메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_치킨_두마리_세트, RTO_메뉴_후라이드_치킨_두마리_세트).execute();
+        MenuResponse 응답_메뉴_후라이드_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_치킨_두마리_세트).get();
 
         // given
-        List<MenuResponse> 예상_메뉴_조회_결과 = asList(RTO_메뉴_후라이드_양념치킨_두마리_세트.get(), RTO_메뉴_후라이드_치킨_두마리_세트.get());
+        List<MenuResponse> 예상_메뉴_조회_결과 = asList(응답_메뉴_후라이드_양념치킨_두마리_세트, 응답_메뉴_후라이드_두마리_세트);
 
         // when, then
-        메뉴_조회_요청_및_성공_확인(예상_메뉴_조회_결과).execute();
+        메뉴_조회_요청_및_성공_확인(예상_메뉴_조회_결과).get();
     }
 }

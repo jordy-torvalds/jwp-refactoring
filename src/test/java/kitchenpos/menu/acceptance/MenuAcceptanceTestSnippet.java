@@ -7,11 +7,10 @@ import kitchenpos.menu.domain.Menu;
 import kitchenpos.menu.domain.MenuProduct;
 import kitchenpos.menu.dto.MenuRequest;
 import kitchenpos.menu.dto.MenuResponse;
-import kitchenpos.utils.ResponseTransferObject;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -19,13 +18,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class MenuAcceptanceTestSnippet {
 
-    public static Executable 메뉴_등록_요청_및_성공_확인(MenuRequest creatingMenu, ResponseTransferObject<MenuResponse> menuRTO) {
+    public static Supplier<MenuResponse> 메뉴_등록_요청_및_성공_확인(MenuRequest creatingMenu) {
         return () -> {
             ExtractableResponse<Response> response = 메뉴_등록_요청(creatingMenu);
 
             메뉴가_등록됨(response, creatingMenu);
 
-            menuRTO.change(response.as(MenuResponse.class));
+            return response.as(MenuResponse.class);
         };
     }
 
@@ -56,11 +55,12 @@ public class MenuAcceptanceTestSnippet {
     }
 
 
-    public static Executable 메뉴_조회_요청_및_성공_확인(List<MenuResponse> expectedMenus) {
+    public static Supplier<List<MenuResponse>>  메뉴_조회_요청_및_성공_확인(List<MenuResponse> expectedMenus) {
         return () -> {
             ExtractableResponse<Response> response = 메뉴_조회_요청();
 
             메뉴가_조회됨(response, expectedMenus);
+            return response.jsonPath().getList(".", MenuResponse.class);
         };
     }
 

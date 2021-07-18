@@ -3,14 +3,12 @@ package kitchenpos.product.acceptance;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import kitchenpos.product.domain.Product;
 import kitchenpos.product.dto.ProductRequest;
 import kitchenpos.product.dto.ProductResponse;
-import kitchenpos.utils.ResponseTransferObject;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.apache.http.HttpHeaders.LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,13 +17,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class ProductAcceptanceTestSnippet {
 
-    public static Executable 상품_등록_요청_및_성공_확인(ProductRequest creatingProductRequest, ResponseTransferObject<ProductResponse> productRTO) {
+    public static Supplier<ProductResponse> 상품_등록_요청_및_성공_확인(ProductRequest creatingProductRequest) {
         return () -> {
             ExtractableResponse<Response> response = 상품_등록_요청(creatingProductRequest);
 
             상품이_등록됨(response, creatingProductRequest);
 
-            productRTO.change(response.as(ProductResponse.class));
+            return response.as(ProductResponse.class);
         };
     }
 
@@ -49,13 +47,13 @@ public class ProductAcceptanceTestSnippet {
         assertThat(createdProductResponse.getPrice().intValue()).isEqualTo(creatingProduct.getPrice().intValue());
     }
 
-    public static Executable 상품_조회_요청_및_성공_확인(List<ProductResponse> products, ResponseTransferObject<List<ProductResponse>> productsRTO) {
+    public static Supplier<List<ProductResponse>> 상품_조회_요청_및_성공_확인(List<ProductResponse> products) {
         return () -> {
             ExtractableResponse<Response> response = 상품_조회_요청();
 
             상품이_조회됨(response, products);
 
-            productsRTO.change(response.jsonPath().getList(".", ProductResponse.class));
+            return response.jsonPath().getList(".", ProductResponse.class);
         };
     }
 
