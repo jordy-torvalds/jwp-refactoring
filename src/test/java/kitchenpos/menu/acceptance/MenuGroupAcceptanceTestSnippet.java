@@ -66,6 +66,6 @@ public class MenuGroupAcceptanceTestSnippet {
         List<MenuGroupResponse> foundMenuGroups = response.jsonPath().getList(".", MenuGroupResponse.class);
 
         assertThat(response.statusCode()).isEqualTo(OK.value());
-        assertThat(foundMenuGroups).isEqualTo(expectedMenuGroups);
+        assertThat(foundMenuGroups).containsAll(expectedMenuGroups);
     }
 }

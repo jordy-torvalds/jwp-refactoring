@@ -47,4 +47,11 @@ public class OrderFixture {
             COMPLETION.name(),
             currentDateTimeSupplier.get(),
             asList(주문_항목_감자튀김_생성.apply(1L, 1L), 주문_항목_후라이드_치킨_생성.apply(1L, 1L)));
+
+    public static Order 주문_양념_후라이드_세트
+            = new Order(6L,
+            주문_테이블_조리_중인_주문_테이블.getId(),
+            COOKING.name(),
+            currentDateTimeSupplier.get(),
+            asList(주문_항목_감자튀김_생성.apply(1L, 1L), 주문_항목_후라이드_치킨_생성.apply(1L, 1L)));
 }

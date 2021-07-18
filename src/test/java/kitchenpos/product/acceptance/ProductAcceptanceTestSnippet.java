@@ -25,6 +25,14 @@ public class ProductAcceptanceTestSnippet {
         return response.as(ProductResponse.class);
     }
 
+    public static List<ProductResponse> 상품_조회_요청_및_성공_확인(List<ProductResponse> products) {
+        ExtractableResponse<Response> response = 상품_조회_요청();
+
+        상품이_조회됨(response, products);
+
+        return response.jsonPath().getList(".", ProductResponse.class);
+    }
+
     public static ExtractableResponse<Response> 상품_등록_요청(ProductRequest creatingProduct) {
 
         return RestAssured
@@ -45,14 +53,6 @@ public class ProductAcceptanceTestSnippet {
         assertThat(createdProductResponse.getPrice().intValue()).isEqualTo(creatingProduct.getPrice().intValue());
     }
 
-    public static List<ProductResponse> 상품_조회_요청_및_성공_확인(List<ProductResponse> products) {
-            ExtractableResponse<Response> response = 상품_조회_요청();
-
-            상품이_조회됨(response, products);
-
-            return response.jsonPath().getList(".", ProductResponse.class);
-    }
-
     public static ExtractableResponse<Response> 상품_조회_요청() {
         return RestAssured
                 .given().log().all()
@@ -66,6 +66,6 @@ public class ProductAcceptanceTestSnippet {
         List<ProductResponse> foundProducts = response.jsonPath().getList(".", ProductResponse.class);
 
         assertThat(response.statusCode()).isEqualTo(OK.value());
-        assertThat(foundProducts).isEqualTo(expectedProducts);
+        assertThat(foundProducts).containsAll(expectedProducts);
     }
 }
