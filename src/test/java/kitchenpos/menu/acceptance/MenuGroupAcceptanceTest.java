@@ -24,30 +24,30 @@ class MenuGroupAcceptanceTest extends AcceptanceTest {
     @Test
     void manageMenuGroups() throws Throwable {
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));
 
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_주류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_주류.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_주류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_주류.getName()));
 
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_서브메뉴 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_서브메뉴.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_서브메뉴 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_서브메뉴.getName()));
 
         // given
         List<MenuGroupResponse> 예상_메뉴그룹_조회_결과 = asList(응답_메뉴그룹_치킨류, 응답_메뉴그룹_주류, 응답_메뉴그룹_서브메뉴);
 
         // when, then
-        메뉴그룹_조회_요청_및_성공_확인(예상_메뉴그룹_조회_결과).get();
+        메뉴그룹_조회_요청_및_성공_확인(예상_메뉴그룹_조회_결과);
     }
     @DisplayName("메뉴그룹을 등록한다")
     @Test
     void createMenuGroups() throws Throwable {
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));
 
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_주류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_주류.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_주류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_주류.getName()));
 
         // when, then
-        MenuGroupResponse 응답_메뉴그룹_서브메뉴 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_서브메뉴.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_서브메뉴 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_서브메뉴.getName()));
     }
 }

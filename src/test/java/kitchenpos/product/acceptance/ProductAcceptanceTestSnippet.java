@@ -17,14 +17,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class ProductAcceptanceTestSnippet {
 
-    public static Supplier<ProductResponse> 상품_등록_요청_및_성공_확인(ProductRequest creatingProductRequest) {
-        return () -> {
-            ExtractableResponse<Response> response = 상품_등록_요청(creatingProductRequest);
+    public static ProductResponse 상품_등록_요청_및_성공_확인(ProductRequest creatingProductRequest) {
+        ExtractableResponse<Response> response = 상품_등록_요청(creatingProductRequest);
 
-            상품이_등록됨(response, creatingProductRequest);
+        상품이_등록됨(response, creatingProductRequest);
 
-            return response.as(ProductResponse.class);
-        };
+        return response.as(ProductResponse.class);
     }
 
     public static ExtractableResponse<Response> 상품_등록_요청(ProductRequest creatingProduct) {
@@ -47,14 +45,12 @@ public class ProductAcceptanceTestSnippet {
         assertThat(createdProductResponse.getPrice().intValue()).isEqualTo(creatingProduct.getPrice().intValue());
     }
 
-    public static Supplier<List<ProductResponse>> 상품_조회_요청_및_성공_확인(List<ProductResponse> products) {
-        return () -> {
+    public static List<ProductResponse> 상품_조회_요청_및_성공_확인(List<ProductResponse> products) {
             ExtractableResponse<Response> response = 상품_조회_요청();
 
             상품이_조회됨(response, products);
 
             return response.jsonPath().getList(".", ProductResponse.class);
-        };
     }
 
     public static ExtractableResponse<Response> 상품_조회_요청() {

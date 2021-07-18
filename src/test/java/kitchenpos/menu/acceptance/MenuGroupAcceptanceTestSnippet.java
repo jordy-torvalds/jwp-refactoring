@@ -17,14 +17,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class MenuGroupAcceptanceTestSnippet {
 
-    public static Supplier<MenuGroupResponse> 메뉴그룹_등록_요청_및_성공_확인(MenuGroupRequest creatingMenuGroup) {
-        return () -> {
-            ExtractableResponse<Response> response = 메뉴그룹_등록_요청(creatingMenuGroup);
+    public static MenuGroupResponse 메뉴그룹_등록_요청_및_성공_확인(MenuGroupRequest creatingMenuGroup) {
+        ExtractableResponse<Response> response = 메뉴그룹_등록_요청(creatingMenuGroup);
 
-            메뉴그룹이_등록됨(response, creatingMenuGroup);
+        메뉴그룹이_등록됨(response, creatingMenuGroup);
 
-            return response.as(MenuGroupResponse.class);
-        };
+        return response.as(MenuGroupResponse.class);
     }
 
     public static ExtractableResponse<Response> 메뉴그룹_등록_요청(MenuGroupRequest creatingMenuGroup) {
@@ -47,14 +45,12 @@ public class MenuGroupAcceptanceTestSnippet {
     }
 
 
-    public static Supplier<List<MenuGroupResponse>> 메뉴그룹_조회_요청_및_성공_확인(List<MenuGroupResponse> expectedMenuGroups) {
-        return () -> {
-            ExtractableResponse<Response> response = 메뉴그룹_조회_요청();
+    public static List<MenuGroupResponse> 메뉴그룹_조회_요청_및_성공_확인(List<MenuGroupResponse> expectedMenuGroups) {
+        ExtractableResponse<Response> response = 메뉴그룹_조회_요청();
 
-            메뉴그룹이_조회됨(response, expectedMenuGroups);
+        메뉴그룹이_조회됨(response, expectedMenuGroups);
 
-            return response.jsonPath().getList(".", MenuGroupResponse.class);
-        };
+        return response.jsonPath().getList(".", MenuGroupResponse.class);
     }
 
     public static ExtractableResponse<Response> 메뉴그룹_조회_요청() {

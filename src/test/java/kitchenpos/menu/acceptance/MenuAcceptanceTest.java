@@ -30,13 +30,13 @@ class MenuAcceptanceTest extends AcceptanceTest {
     @Test
     void manageMenu() throws Throwable {
         // given
-        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_후라이드_치킨.getName(), 상품_후라이드_치킨.getPrice())).get();
+        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_후라이드_치킨.getName(), 상품_후라이드_치킨.getPrice()));
 
         // given
-        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_양념_치킨.getName(), 상품_양념_치킨.getPrice())).get();
+        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_양념_치킨.getName(), 상품_양념_치킨.getPrice()));
 
         // given
-        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName())).get();
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));
 
         // given
         MenuProductRequests 메뉴상품_후라이드_양념치킨_두마리_세트 =
@@ -56,15 +56,15 @@ class MenuAcceptanceTest extends AcceptanceTest {
                 new MenuRequest("후라이드 두마리 세트", valueOf(36_000), 응답_메뉴그룹_치킨류.getId(), 메뉴상품_후라이드_치킨_두마리_세트.get());
 
         // when, then
-        MenuResponse 응답_메뉴_후라이드_양념치킨_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_양념치킨_두마리_세트).get();
+        MenuResponse 응답_메뉴_후라이드_양념치킨_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_양념치킨_두마리_세트);
 
         // when, then
-        MenuResponse 응답_메뉴_후라이드_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_치킨_두마리_세트).get();
+        MenuResponse 응답_메뉴_후라이드_두마리_세트 = 메뉴_등록_요청_및_성공_확인(요청_메뉴_후라이드_치킨_두마리_세트);
 
         // given
         List<MenuResponse> 예상_메뉴_조회_결과 = asList(응답_메뉴_후라이드_양념치킨_두마리_세트, 응답_메뉴_후라이드_두마리_세트);
 
         // when, then
-        메뉴_조회_요청_및_성공_확인(예상_메뉴_조회_결과).get();
+        메뉴_조회_요청_및_성공_확인(예상_메뉴_조회_결과);
     }
 }

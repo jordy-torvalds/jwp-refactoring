@@ -18,14 +18,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class MenuAcceptanceTestSnippet {
 
-    public static Supplier<MenuResponse> 메뉴_등록_요청_및_성공_확인(MenuRequest creatingMenu) {
-        return () -> {
-            ExtractableResponse<Response> response = 메뉴_등록_요청(creatingMenu);
+    public static MenuResponse 메뉴_등록_요청_및_성공_확인(MenuRequest creatingMenu) {
+        ExtractableResponse<Response> response = 메뉴_등록_요청(creatingMenu);
 
-            메뉴가_등록됨(response, creatingMenu);
+        메뉴가_등록됨(response, creatingMenu);
 
-            return response.as(MenuResponse.class);
-        };
+        return response.as(MenuResponse.class);
     }
 
     public static ExtractableResponse<Response> 메뉴_등록_요청(MenuRequest creatingMenu) {
@@ -55,13 +53,11 @@ public class MenuAcceptanceTestSnippet {
     }
 
 
-    public static Supplier<List<MenuResponse>>  메뉴_조회_요청_및_성공_확인(List<MenuResponse> expectedMenus) {
-        return () -> {
-            ExtractableResponse<Response> response = 메뉴_조회_요청();
+    public static List<MenuResponse>  메뉴_조회_요청_및_성공_확인(List<MenuResponse> expectedMenus) {
+        ExtractableResponse<Response> response = 메뉴_조회_요청();
 
-            메뉴가_조회됨(response, expectedMenus);
-            return response.jsonPath().getList(".", MenuResponse.class);
-        };
+        메뉴가_조회됨(response, expectedMenus);
+        return response.jsonPath().getList(".", MenuResponse.class);
     }
 
     public static ExtractableResponse<Response> 메뉴_조회_요청() {

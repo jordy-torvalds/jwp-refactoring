@@ -25,23 +25,23 @@ class ProductAcceptanceTest extends AcceptanceTest {
     @Test
     void manageProducts() throws Throwable {
         // when, then
-        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("후라이드 치킨", valueOf(15_000))).get();
+        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("후라이드 치킨", valueOf(15_000)));
 
         // when, then
-        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("양념 치킨", valueOf(15_000))).get();
+        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("양념 치킨", valueOf(15_000)));
 
         // given
         List<ProductResponse> 예상_상품_조회_결과 = asList(응답_상품_후라이드_치킨, 응답_상품_양념_치킨);
 
         // when, then
-        상품_조회_요청_및_성공_확인(예상_상품_조회_결과).get();
+        상품_조회_요청_및_성공_확인(예상_상품_조회_결과);
     }
 
     @DisplayName("상품을 등록한다")
     @Test
     void createProduct() throws Throwable {
-        상품_등록_요청_및_성공_확인(new ProductRequest("후라이드 치킨", valueOf(15_000))).get();
+        상품_등록_요청_및_성공_확인(new ProductRequest("후라이드 치킨", valueOf(15_000)));
 
-        상품_등록_요청_및_성공_확인(new ProductRequest("양념 치킨", valueOf(15_000))).get();
+        상품_등록_요청_및_성공_확인(new ProductRequest("양념 치킨", valueOf(15_000)));
     }
 }
