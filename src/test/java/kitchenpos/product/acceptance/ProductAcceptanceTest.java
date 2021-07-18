@@ -2,8 +2,8 @@ package kitchenpos.product.acceptance;
 
 import kitchenpos.AcceptanceTest;
 import kitchenpos.product.domain.Product;
+import kitchenpos.utils.ResponseTransferObject;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -22,13 +22,31 @@ class ProductAcceptanceTest extends AcceptanceTest {
         super.setUp();
     }
 
+    private ResponseTransferObject<Product> RTO_상품_후라이드_치킨 = new ResponseTransferObject<>();
+    private ResponseTransferObject<Product> RTO_상품_양념_치킨 = new ResponseTransferObject<>();
+    private ResponseTransferObject<List<Product>> RTO_상품_조회_결과 = new ResponseTransferObject<>();
+
     @DisplayName("상품을 관리한다")
-    @TestFactory
-    Stream<DynamicTest> manageProduct() {
-        return Stream.of(
-                dynamicTest("상품을 등록한다(후라이드 치킨)", 상품_등록_요청_및_성공_확인(상품_후라이드_치킨)),
-                dynamicTest("상품을 등록한다(양념 치킨)", 상품_등록_요청_및_성공_확인(상품_양념_치킨)),
-                dynamicTest("상품을 등록한다(후라이드 치킨, 양념 치킨)", 상품_조회_요청_및_성공_확인(asList(상품_후라이드_치킨, 상품_양념_치킨)))
-        );
+    @Test
+    void manageProducts() throws Throwable {
+        // when, then
+        상품_등록_요청_및_성공_확인(상품_후라이드_치킨, RTO_상품_후라이드_치킨).execute();
+
+        // when, then
+        상품_등록_요청_및_성공_확인(상품_양념_치킨, RTO_상품_양념_치킨).execute();
+
+        // given
+        List<Product> 예상_상품_조회_결과 = asList(RTO_상품_후라이드_치킨.get(), RTO_상품_양념_치킨.get());
+
+        // when, then
+        상품_조회_요청_및_성공_확인(예상_상품_조회_결과, RTO_상품_조회_결과).execute();
+    }
+
+    @DisplayName("상품을 등록한다")
+    @Test
+    void createProduct() throws Throwable {
+        상품_등록_요청_및_성공_확인(상품_후라이드_치킨, RTO_상품_후라이드_치킨).execute();
+
+        상품_등록_요청_및_성공_확인(상품_양념_치킨, RTO_상품_양념_치킨).execute();
     }
 }

@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kitchenpos.product.domain.Product;
-import org.apache.http.HttpHeaders;
+import kitchenpos.utils.ResponseTransferObject;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.MediaType;
 
@@ -17,11 +17,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class ProductAcceptanceTestSnippet {
 
-    public static Executable 상품_등록_요청_및_성공_확인(Product creatingProduct) {
+    public static Executable 상품_등록_요청_및_성공_확인(Product creatingProduct, ResponseTransferObject<Product> productRTO) {
         return () -> {
             ExtractableResponse<Response> response = 상품_등록_요청(creatingProduct);
 
             상품이_등록됨(response, creatingProduct);
+
+            productRTO.change(response.as(Product.class));
         };
     }
 
@@ -41,14 +43,15 @@ public class ProductAcceptanceTestSnippet {
 
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
         assertThat(response.header(LOCATION)).isNotBlank();
-        assertThat(createdProduct).isEqualTo(creatingProduct);
     }
 
-    public static Executable 상품_조회_요청_및_성공_확인(List<Product> products) {
+    public static Executable 상품_조회_요청_및_성공_확인(List<Product> products, ResponseTransferObject<List<Product>> productsRTO) {
         return () -> {
             ExtractableResponse<Response> response = 상품_조회_요청();
 
             상품이_조회됨(response, products);
+
+            productsRTO.change(response.jsonPath().getList(".", Product.class));
         };
     }
 
