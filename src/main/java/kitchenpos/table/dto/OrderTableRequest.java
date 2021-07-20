@@ -36,4 +36,16 @@ public class OrderTableRequest {
     public boolean isEmpty() {
         return empty;
     }
+
+    public static OrderTableRequest createChangingEmptyRequest(boolean empty) {
+        OrderTableRequest orderTableRequest = new OrderTableRequest();
+        orderTableRequest.empty = empty;
+        return orderTableRequest;
+    }
+
+    public static OrderTableRequest createChangingGuestNumberRequest(int numberOfGuests) {
+        OrderTableRequest orderTableRequest = new OrderTableRequest();
+        orderTableRequest.numberOfGuests = numberOfGuests;
+        return orderTableRequest;
+    }
 }
