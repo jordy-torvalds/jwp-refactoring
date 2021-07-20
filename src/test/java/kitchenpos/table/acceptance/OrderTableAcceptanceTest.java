@@ -21,7 +21,7 @@ class OrderTableAcceptanceTest extends AcceptanceTest {
         super.setUp();
     }
 
-    @DisplayName("주문테이블을 관리한다")
+    @DisplayName("주문 테이블을 관리한다")
     @Test
     void manageOrderTables() {
         // when, then
@@ -43,7 +43,7 @@ class OrderTableAcceptanceTest extends AcceptanceTest {
         주문테이블의_인원수_변경_요청_및_성공_확인(응답_생성된_10명의_고객이_있는_주문_테이블.getId(), new TableGuestNumberRequest(5));
     }
 
-    @DisplayName("주문_테이블을_등록한다")
+    @DisplayName("주문 테이블을 등록한다")
     @Test
     void createOrderTables() {
         // when, then
