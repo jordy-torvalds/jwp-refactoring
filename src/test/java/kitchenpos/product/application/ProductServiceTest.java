@@ -1,7 +1,6 @@
 package kitchenpos.product.application;
 
 import kitchenpos.product.dao.ProductDao;
-import kitchenpos.product.application.ProductService;
 import kitchenpos.product.domain.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,10 +52,10 @@ class ProductServiceTest {
         verify(productDao, times(1)).save(product);
     }
 
-    Stream<Arguments> methodSource_create_성공() {
+    Stream<Product> methodSource_create_성공() {
         return Stream.of(
-                Arguments.of(상품_무료_콜라_서비스),
-                Arguments.of(상품_후라이드_치킨)
+                상품_무료_콜라_서비스.get(),
+                상품_후라이드_치킨.get()
         );
     }
 
@@ -82,7 +81,7 @@ class ProductServiceTest {
     @Test
     void list_성공() {
         // given
-        List<Product> products = asList(상품_후라이드_치킨, 상품_양념_치킨, 상품_무료_콜라_서비스);
+        List<Product> products = asList(상품_후라이드_치킨.get(), 상품_양념_치킨.get(), 상품_무료_콜라_서비스.get());
 
         // when
         when(productDao.findAll()).thenReturn(products);

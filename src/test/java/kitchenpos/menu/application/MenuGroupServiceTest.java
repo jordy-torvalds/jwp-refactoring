@@ -60,8 +60,8 @@ class MenuGroupServiceTest {
     void list_성공() {
         // given
         List<MenuGroup> menuGroups = asList(
-                메뉴그룹_치킨류,
-                메뉴그룹_주류);
+                메뉴그룹_치킨류.get(),
+                메뉴그룹_주류.get());
 
         // when
         when(menuGroupDao.findAll()).thenReturn(menuGroups);

@@ -5,42 +5,39 @@ import kitchenpos.menu.dto.MenuProductRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static kitchenpos.menu.fixture.MenuFixture.*;
 import static kitchenpos.product.fixture.ProductFixture.*;
 
 public class MenuProductFixture {
-    public static MenuProduct 메뉴_상품_후라이드_치킨
-            = new MenuProduct(1L, 1L, 상품_후라이드_치킨.getId(), 1L);
+    private static Long 메뉴_상품_후라이드_치킨_ID = 1L;
+    private static Long 메뉴_상품_양념_치킨_ID = 2L;
+    private static Long 메뉴_상품_양념_치킨_두마리_ID = 3L;
+    private static Long 메뉴_상품_후라이드_치킨_두마리_ID = 4L;
+    private static Long 메뉴_상품_감자튀김_ID = 5L;
+    private static Long 메뉴_상품_치즈볼_ID = 6L;
+    private static Long 메뉴_상품_옛날통닭_ID = 7L;
+    public static Supplier<MenuProduct> 메뉴_상품_후라이드_치킨
+            = () -> new MenuProduct(메뉴_상품_후라이드_치킨_ID, 메뉴_후라이드_치킨_한마리_ID, 상품_후라이드_치킨_ID, 1L);
 
-    public static MenuProduct 메뉴_상품_양념_치킨
-            =  new MenuProduct(2L, 2L, 상품_양념_치킨.getId(), 1L);
+    public static Supplier<MenuProduct> 메뉴_상품_양념_치킨
+            = () -> new MenuProduct(메뉴_상품_양념_치킨_ID, 메뉴_양념_치킨_한마리_ID, 상품_양념_치킨_ID, 1L);
 
-    public static MenuProduct 메뉴_상품_양념_치킨_두마리
-            = new MenuProduct(3L, 3L, 상품_양념_치킨.getId(), 2L);
+    public static Supplier<MenuProduct> 메뉴_상품_양념_치킨_두마리
+            = () -> new MenuProduct(메뉴_상품_양념_치킨_두마리_ID, 메뉴_양념_두마리_치킨_세트_ID, 상품_양념_치킨_ID, 2L);
 
-    public static MenuProduct 메뉴_상품_후라이드_치킨_두마리
-            = new MenuProduct(4L, 4L, 상품_후라이드_치킨.getId(), 2L);
+    public static Supplier<MenuProduct> 메뉴_상품_후라이드_치킨_두마리
+            = () -> new MenuProduct(메뉴_상품_후라이드_치킨_두마리_ID, 메뉴_후라이드_두마리_치킨_세트_ID, 상품_후라이드_치킨_ID, 2L);
 
-    public static MenuProduct 메뉴_상품_감자튀김
-            = new MenuProduct(5L, 5L, 상품_감자튀김.getId(), 1L);
+    public static Supplier<MenuProduct> 메뉴_상품_감자튀김
+            = () -> new MenuProduct(메뉴_상품_감자튀김_ID, 메뉴_감자튀김_ID, 상품_감자튀김_ID, 1L);
 
-    public static MenuProduct 메뉴_상품_치즈볼
-            = new MenuProduct(6L, 6L, 상품_치즈볼.getId(), 1L);
+    public static Supplier<MenuProduct> 메뉴_상품_치즈볼
+            = () -> new MenuProduct(메뉴_상품_치즈볼_ID, 메뉴_치즈볼_ID, 상품_치즈볼_ID, 1L);
 
-    public static MenuProduct 메뉴_상품_옛날통닭
-            = new MenuProduct(7L, 7L, 상품_옛날통닭.getId(), 1L);
-
-    public static List<MenuProduct> 메뉴_상품_양념_후라이드_두마리_치킨_세트
-            = asList(
-            메뉴_상품_후라이드_치킨,
-            메뉴_상품_양념_치킨
-    );
-
-    public static List<MenuProduct> 메뉴_상품_양념_두마리_치킨_세트
-            = asList(메뉴_상품_양념_치킨_두마리);
-
-    public static List<MenuProduct> 메뉴_상품_후라이드_두마리_치킨_세트
-            = asList(메뉴_상품_후라이드_치킨_두마리);
+    public static Supplier<MenuProduct> 메뉴_상품_옛날통닭
+            = () -> new MenuProduct(메뉴_상품_옛날통닭_ID, 메뉴_옛날통닭_ID, 상품_옛날통닭_ID, 1L);
 }

@@ -3,6 +3,7 @@ package kitchenpos.menu.application;
 import kitchenpos.menu.dao.MenuDao;
 import kitchenpos.menu.dao.MenuGroupDao;
 import kitchenpos.menu.dao.MenuProductDao;
+import kitchenpos.menu.domain.MenuProduct;
 import kitchenpos.product.dao.ProductDao;
 import kitchenpos.menu.domain.Menu;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -22,10 +24,10 @@ import java.util.stream.Stream;
 import static java.math.BigDecimal.valueOf;
 import static java.util.Arrays.asList;
 import static kitchenpos.menu.fixture.MenuFixture.메뉴_양념_후라이드_두마리_치킨_세트;
+import static kitchenpos.menu.fixture.MenuFixture.메뉴_양념_후라이드_두마리_치킨_세트_ID;
 import static kitchenpos.menu.fixture.MenuProductFixture.메뉴_상품_양념_치킨;
 import static kitchenpos.menu.fixture.MenuProductFixture.메뉴_상품_후라이드_치킨;
-import static kitchenpos.product.fixture.ProductFixture.상품_양념_치킨;
-import static kitchenpos.product.fixture.ProductFixture.상품_후라이드_치킨;
+import static kitchenpos.product.fixture.ProductFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -63,47 +65,52 @@ class MenuServiceTest {
     }
 
     Stream<Arguments> methodSource_create_예외_유효하지_않은_메뉴가격() {
+        Menu illegalPriceMenu1 = 메뉴_양념_후라이드_두마리_치킨_세트.get();
+
         return Stream.of(
                 Arguments.of(
-                        new Menu(메뉴_양념_후라이드_두마리_치킨_세트.getId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getName(),
+                        new Menu(illegalPriceMenu1.getId(),
+                                illegalPriceMenu1.getName(),
                                 valueOf(-1),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts())
+                                illegalPriceMenu1.getMenuGroupId(),
+                                illegalPriceMenu1.getMenuProducts())
                 ),
                 Arguments.of(
-                        new Menu(메뉴_양념_후라이드_두마리_치킨_세트.getId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getName(),
+                        new Menu(illegalPriceMenu1.getId(),
+                                illegalPriceMenu1.getName(),
                                 null,
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts())
+                                illegalPriceMenu1.getMenuGroupId(),
+                                illegalPriceMenu1.getMenuProducts())
                 )
         );
     }
 
     @Test
     void create_예외_존재하지_않는_메뉴그룹() {
+        // given
+        Menu 양념_후라이드_두마리_치킨_세트 = 메뉴_양념_후라이드_두마리_치킨_세트.get();
         // when
-        when(menuGroupDao.existsById(메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId())).thenReturn(false);
+        when(menuGroupDao.existsById(메뉴_양념_후라이드_두마리_치킨_세트.get().getMenuGroupId())).thenReturn(false);
 
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> menuService.create(메뉴_양념_후라이드_두마리_치킨_세트));
+                .isThrownBy(() -> menuService.create(양념_후라이드_두마리_치킨_세트));
     }
 
     @Test
     void create_예외_부적절한_메뉴_가격() {
         // given
-        Menu 단품_보다_가격이_더_높은_가격의_메뉴 = new Menu(메뉴_양념_후라이드_두마리_치킨_세트.getId(),
-                메뉴_양념_후라이드_두마리_치킨_세트.getName(),
+        Menu 양념_후라이드_두마리_치킨_세트 = 메뉴_양념_후라이드_두마리_치킨_세트.get();
+        Menu 단품_보다_가격이_더_높은_가격의_메뉴 = new Menu(양념_후라이드_두마리_치킨_세트.getId(),
+                양념_후라이드_두마리_치킨_세트.getName(),
                 valueOf(38_000),
-                메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
-                메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts());
+                양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
+                양념_후라이드_두마리_치킨_세트.getMenuProducts());
 
         // when
-        when(productDao.findById(상품_후라이드_치킨.getId())).thenReturn(Optional.of(상품_후라이드_치킨));
-        when(productDao.findById(상품_양념_치킨.getId())).thenReturn(Optional.of(상품_양념_치킨));
-        when(menuGroupDao.existsById(메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId())).thenReturn(true);
+        when(productDao.findById(상품_후라이드_치킨_ID)).thenReturn(Optional.of(상품_후라이드_치킨.get()));
+        when(productDao.findById(상품_양념_치킨_ID)).thenReturn(Optional.of(상품_양념_치킨.get()));
+        when(menuGroupDao.existsById(단품_보다_가격이_더_높은_가격의_메뉴.getMenuGroupId())).thenReturn(true);
 
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -113,16 +120,20 @@ class MenuServiceTest {
     @MethodSource("methodSource_create_성공")
     @ParameterizedTest
     void create_성공(Menu menu) {
+        // given
+        List<MenuProduct> menuProductsInMenu = menu.getMenuProducts();
+
         // when
-        when(productDao.findById(상품_후라이드_치킨.getId())).thenReturn(Optional.of(상품_후라이드_치킨));
-        when(productDao.findById(상품_양념_치킨.getId())).thenReturn(Optional.of(상품_양념_치킨));
+        when(productDao.findById(상품_후라이드_치킨_ID)).thenReturn(Optional.of(상품_후라이드_치킨.get()));
+        when(productDao.findById(상품_양념_치킨_ID)).thenReturn(Optional.of(상품_양념_치킨.get()));
 
         when(menuGroupDao.existsById(menu.getMenuGroupId())).thenReturn(true);
 
         when(menuDao.save(menu)).thenReturn(menu);
 
-        when(menuProductDao.save(메뉴_상품_후라이드_치킨)).thenReturn(메뉴_상품_후라이드_치킨);
-        when(menuProductDao.save(메뉴_상품_양념_치킨)).thenReturn(메뉴_상품_양념_치킨);
+        menuProductsInMenu
+                .forEach((menuProduct -> when(menuProductDao.save(menuProduct))
+                        .thenReturn(menuProduct)));
 
         Menu createdMenu = menuService.create(menu);
 
@@ -130,33 +141,23 @@ class MenuServiceTest {
         assertThat(createdMenu).isEqualTo(menu);
     }
 
-    Stream<Arguments> methodSource_create_성공() {
+    Stream<Menu> methodSource_create_성공() {
+        Menu 양념_후라이드_두마리_치킨_세트 = 메뉴_양념_후라이드_두마리_치킨_세트.get();
+        Menu 할인된_양념_후라이드_두마리_치킨_세트 = 메뉴_양념_후라이드_두마리_치킨_세트.get();
+        할인된_양념_후라이드_두마리_치킨_세트.getPrice().subtract(BigDecimal.valueOf(3_000));
         return Stream.of(
-                Arguments.of(
-                        new Menu(메뉴_양념_후라이드_두마리_치킨_세트.getId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getName(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getPrice(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts())
-                ),
-                Arguments.of(
-                        new Menu(메뉴_양념_후라이드_두마리_치킨_세트.getId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getName(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getPrice().subtract(valueOf(3_000)),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuGroupId(),
-                                메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts())
-                )
-        );
+                양념_후라이드_두마리_치킨_세트,
+                할인된_양념_후라이드_두마리_치킨_세트);
     }
 
     @Test
     void list_성공() {
         // given
-        List<Menu> expectedMenus = asList(메뉴_양념_후라이드_두마리_치킨_세트);
+        List<Menu> expectedMenus = asList(메뉴_양념_후라이드_두마리_치킨_세트.get());
 
         // when
-        when(menuDao.findAll()).thenReturn(asList(메뉴_양념_후라이드_두마리_치킨_세트));
-        when(menuProductDao.findAllByMenuId(메뉴_양념_후라이드_두마리_치킨_세트.getId())).thenReturn(메뉴_양념_후라이드_두마리_치킨_세트.getMenuProducts());
+        when(menuDao.findAll()).thenReturn(asList(메뉴_양념_후라이드_두마리_치킨_세트.get()));
+        when(menuProductDao.findAllByMenuId(메뉴_양념_후라이드_두마리_치킨_세트_ID)).thenReturn(메뉴_양념_후라이드_두마리_치킨_세트.get().getMenuProducts());
 
         List<Menu> foundMenu = menuService.list();
         // then

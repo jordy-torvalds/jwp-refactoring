@@ -2,11 +2,13 @@ package kitchenpos.order.acceptance;
 
 import kitchenpos.AcceptanceTest;
 import kitchenpos.menu.dto.*;
+import kitchenpos.menu.fixture.MenuGroupFixture;
 import kitchenpos.order.dto.OrderLineItemRequests;
 import kitchenpos.order.dto.OrderRequest;
 import kitchenpos.order.dto.OrderResponse;
 import kitchenpos.product.dto.ProductRequest;
 import kitchenpos.product.dto.ProductResponse;
+import kitchenpos.product.fixture.ProductFixture;
 import kitchenpos.table.dto.OrderTableRequest;
 import kitchenpos.table.dto.OrderTableResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +22,13 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static kitchenpos.menu.acceptance.MenuAcceptanceTestSnippet.메뉴_등록_요청_및_성공_확인;
 import static kitchenpos.menu.acceptance.MenuGroupAcceptanceTestSnippet.메뉴그룹_등록_요청_및_성공_확인;
+import static kitchenpos.menu.fixture.MenuGroupFixture.map;
 import static kitchenpos.menu.fixture.MenuGroupFixture.메뉴그룹_치킨류;
 import static kitchenpos.order.acceptance.OrderAcceptanceTestSnippet.*;
 import static kitchenpos.order.domain.OrderStatus.*;
 import static kitchenpos.product.acceptance.ProductAcceptanceTestSnippet.상품_등록_요청_및_성공_확인;
+import static kitchenpos.product.fixture.ProductFixture.상품_양념_치킨;
+import static kitchenpos.product.fixture.ProductFixture.상품_후라이드_치킨;
 import static kitchenpos.table.acceptance.OrderTableAcceptanceTestSnippet.주문테이블_등록_요청_및_성공_확인;
 
 class OrderAcceptanceTest extends AcceptanceTest {
@@ -34,13 +39,13 @@ class OrderAcceptanceTest extends AcceptanceTest {
         super.setUp();
 
         // given
-        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("후라이드 치킨", valueOf(18_000)));
+        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(ProductFixture.map(상품_후라이드_치킨.get()));
 
         // given
-        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest("양념 치킨", valueOf(18_000)));
+        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(ProductFixture.map(상품_양념_치킨.get()));
 
         // given
-        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(MenuGroupFixture.map(메뉴그룹_치킨류.get()));
 
         // given
         MenuProductRequests 요청_메뉴상품_후라이드_양념치킨_두마리_세트 =

@@ -6,6 +6,7 @@ import kitchenpos.product.dto.ProductRequest;
 import kitchenpos.product.dto.ProductResponse;
 import org.junit.jupiter.api.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.math.BigDecimal.valueOf;
@@ -15,8 +16,7 @@ import static kitchenpos.menu.acceptance.MenuAcceptanceTestSnippet.메뉴_조회
 import static kitchenpos.menu.acceptance.MenuGroupAcceptanceTestSnippet.메뉴그룹_등록_요청_및_성공_확인;
 import static kitchenpos.menu.fixture.MenuGroupFixture.*;
 import static kitchenpos.product.acceptance.ProductAcceptanceTestSnippet.상품_등록_요청_및_성공_확인;
-import static kitchenpos.product.fixture.ProductFixture.상품_양념_치킨;
-import static kitchenpos.product.fixture.ProductFixture.상품_후라이드_치킨;
+import static kitchenpos.product.fixture.ProductFixture.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 class MenuAcceptanceTest extends AcceptanceTest {
@@ -30,10 +30,10 @@ class MenuAcceptanceTest extends AcceptanceTest {
     @Test
     void manageMenu() throws Throwable {
         // given
-        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_후라이드_치킨.getName(), 상품_후라이드_치킨.getPrice()));
+        ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(map(상품_후라이드_치킨.get()));
 
         // given
-        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(new ProductRequest(상품_양념_치킨.getName(), 상품_양념_치킨.getPrice()));
+        ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(map(상품_양념_치킨.get()));
 
         // given
         MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));

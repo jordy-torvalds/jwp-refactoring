@@ -13,6 +13,7 @@ import static kitchenpos.order.fixture.OrderTableFixture.*;
 
 public class OrderFixture {
     private static Supplier<LocalDateTime> currentDateTimeSupplier = LocalDateTime::now;
+
     public static Order 주문_후라이드_한마리_감자튀김_조리중
             = new Order(1L,
             주문_테이블_조리_중인_주문_테이블.getId(),
