@@ -4,7 +4,6 @@ import kitchenpos.order.dao.OrderDao;
 import kitchenpos.table.dao.OrderTableDao;
 import kitchenpos.table.dao.TableGroupDao;
 import kitchenpos.order.domain.OrderStatus;
-import kitchenpos.table.application.TableGroupService;
 import kitchenpos.table.domain.OrderTable;
 import kitchenpos.table.domain.TableGroup;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +70,8 @@ class TableGroupServiceTest {
     @Test
     void create_예외_저장되지_않은_주문_테이블() {
         // when
-        final List<Long> orderTableIds = 테이블_그룹_1번.getOrderTables().stream()
+        TableGroup targetTableGroup = 테이블_그룹_1번.get();
+        final List<Long> orderTableIds = targetTableGroup.getOrderTables().stream()
                 .map(OrderTable::getId)
                 .collect(Collectors.toList());
         when(orderTableDao.findAllByIdIn(orderTableIds)).thenReturn(Collections.emptyList());
@@ -79,79 +79,83 @@ class TableGroupServiceTest {
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableGroupService.create(테이블_그룹_1번));
+                .isThrownBy(() -> tableGroupService.create(targetTableGroup));
     }
 
     @MethodSource("methodSource_create_예외_테이블_비어있지_않거나_테이블_그룹_번호가_있는_테이블")
     @ParameterizedTest
     void create_예외_테이블_비어있지_않거나_테이블_그룹_번호가_있는_테이블() {
         // when
-        final List<Long> orderTableIds = 테이블_그룹_1번.getOrderTables().stream()
+        TableGroup targetTableGroup = 테이블_그룹_1번.get();
+        final List<Long> orderTableIds = targetTableGroup.getOrderTables().stream()
                 .map(OrderTable::getId)
                 .collect(Collectors.toList());
 
-        when(orderTableDao.findAllByIdIn(orderTableIds)).thenReturn(asList(테이블_그룹_1번.getOrderTables().get(0),
-                테이블_그룹_1번.getOrderTables().get(1),
-                주문_테이블_식사_중인_주문_테이블));
+        when(orderTableDao.findAllByIdIn(orderTableIds)).thenReturn(asList(targetTableGroup.getOrderTables().get(0),
+                targetTableGroup.getOrderTables().get(1),
+                주문_테이블_식사_중인_주문_테이블.get()));
 
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableGroupService.create(테이블_그룹_1번));
+                .isThrownBy(() -> tableGroupService.create(targetTableGroup));
     }
 
     Stream<Arguments> methodSource_create_예외_테이블_비어있지_않거나_테이블_그룹_번호가_있는_테이블() {
         return Stream.of(
                 Arguments.of(주문_테이블_식사_중인_주문_테이블),
-                Arguments.of(주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블)
+                Arguments.of(주문_테이블_고객이_3명인_첫번째_테이블.get())
         );
     }
 
     @Test
     void create_성공() {
         // when
-        final List<Long> orderTableIds = 테이블_그룹_1번.getOrderTables().stream()
+        TableGroup targetTableGroup = 테이블_그룹_1번.get();
+        final List<Long> orderTableIds = targetTableGroup.getOrderTables().stream()
                 .map(OrderTable::getId)
                 .collect(Collectors.toList());
 
-        when(orderTableDao.findAllByIdIn(orderTableIds)).thenReturn(테이블_그룹_1번.getOrderTables());
-        when(tableGroupDao.save(테이블_그룹_1번)).thenReturn(테이블_그룹_1번);
+        when(orderTableDao.findAllByIdIn(orderTableIds)).thenReturn(targetTableGroup.getOrderTables());
+        when(tableGroupDao.save(targetTableGroup)).thenReturn(targetTableGroup);
 
         // then
-        assertDoesNotThrow(() -> tableGroupService.create(테이블_그룹_1번));
+        assertDoesNotThrow(() -> tableGroupService.create(targetTableGroup));
     }
 
     @Test
     void ungroup_예외_식사_중이거나_조리_중인_주문을_포함한_테이블() {
         // given
-        final List<Long> orderTableIds = 테이블_그룹_2번.getOrderTables().stream()
+        TableGroup targetTableGroup = 테이블_그룹_2번.get();
+        final List<Long> orderTableIds = targetTableGroup.getOrderTables().stream()
                 .map(OrderTable::getId)
                 .collect(Collectors.toList());
 
         // when
-        when(orderTableDao.findAllByTableGroupId(테이블_그룹_2번.getId())).thenReturn(테이블_그룹_2번.getOrderTables());
+        when(orderTableDao.findAllByTableGroupId(targetTableGroup.getId())).thenReturn(targetTableGroup.getOrderTables());
         when(orderDao.existsByOrderTableIdInAndOrderStatusIn(
                 orderTableIds, Arrays.asList(OrderStatus.COOKING.name(), OrderStatus.MEAL.name()))).thenReturn(true);
 
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableGroupService.ungroup(테이블_그룹_2번.getId()));
+                .isThrownBy(() -> tableGroupService.ungroup(targetTableGroup.getId()));
     }
 
     @Test
     void ungroup_성공() {
         // given
-        final List<Long> orderTableIds = 테이블_그룹_2번.getOrderTables().stream()
+        TableGroup targetTableGroup = 테이블_그룹_2번.get();
+        final List<Long> orderTableIds = targetTableGroup.getOrderTables().stream()
                 .map(OrderTable::getId)
                 .collect(Collectors.toList());
 
         // when
-        when(orderTableDao.findAllByTableGroupId(테이블_그룹_2번.getId())).thenReturn(테이블_그룹_2번.getOrderTables());
+        when(orderTableDao.findAllByTableGroupId(targetTableGroup.getId())).thenReturn(targetTableGroup.getOrderTables());
         when(orderDao.existsByOrderTableIdInAndOrderStatusIn(
                 orderTableIds, Arrays.asList(OrderStatus.COOKING.name(), OrderStatus.MEAL.name()))).thenReturn(false);
-        tableGroupService.ungroup(테이블_그룹_2번.getId());
+        tableGroupService.ungroup(targetTableGroup.getId());
 
         // then
-        for(OrderTable orderTable :테이블_그룹_2번.getOrderTables()) {
+        for(OrderTable orderTable :targetTableGroup.getOrderTables()) {
             verify(orderTableDao, times(1)).save(orderTable);
         }
     }

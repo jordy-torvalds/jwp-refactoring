@@ -5,11 +5,15 @@
 
 ### 어려운 점
 - ID에 있어 유연한 테스트 구조 짜기.
+  - ID는 고정되어 있으면서 Fixture 의 속성은 불변이어야 함.
   - Fixture 방식 개선 진행 중
-    - [ ] Product
-    - [ ] Menu
-    - [ ] Order
-    - [ ] Table
+    - [x] Product
+    - [x] Menu
+    - [x] Order
+      - [x] OrderTable
+      - [x] Order
+      - [x] OrderLineItem
+    - [x] Table
 
 ### 기능 구현 목록
 - [x] 메인 / 테스트의 클래스를 각 도메인 별로 패키지 분리

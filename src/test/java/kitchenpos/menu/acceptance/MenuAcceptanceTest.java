@@ -2,11 +2,12 @@ package kitchenpos.menu.acceptance;
 
 import kitchenpos.AcceptanceTest;
 import kitchenpos.menu.dto.*;
-import kitchenpos.product.dto.ProductRequest;
 import kitchenpos.product.dto.ProductResponse;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 import static java.math.BigDecimal.valueOf;
@@ -14,10 +15,9 @@ import static java.util.Arrays.asList;
 import static kitchenpos.menu.acceptance.MenuAcceptanceTestSnippet.메뉴_등록_요청_및_성공_확인;
 import static kitchenpos.menu.acceptance.MenuAcceptanceTestSnippet.메뉴_조회_요청_및_성공_확인;
 import static kitchenpos.menu.acceptance.MenuGroupAcceptanceTestSnippet.메뉴그룹_등록_요청_및_성공_확인;
-import static kitchenpos.menu.fixture.MenuGroupFixture.*;
+import static kitchenpos.menu.fixture.MenuGroupFixture.메뉴그룹_치킨류;
 import static kitchenpos.product.acceptance.ProductAcceptanceTestSnippet.상품_등록_요청_및_성공_확인;
 import static kitchenpos.product.fixture.ProductFixture.*;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 class MenuAcceptanceTest extends AcceptanceTest {
 
@@ -28,7 +28,8 @@ class MenuAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("메뉴를 관리한다")
     @Test
-    void manageMenu() throws Throwable {
+    @SuppressWarnings("java:S2699")
+    void manageMenu() {
         // given
         ProductResponse 응답_상품_후라이드_치킨 = 상품_등록_요청_및_성공_확인(map(상품_후라이드_치킨.get()));
 
@@ -36,7 +37,7 @@ class MenuAcceptanceTest extends AcceptanceTest {
         ProductResponse 응답_상품_양념_치킨 = 상품_등록_요청_및_성공_확인(map(상품_양념_치킨.get()));
 
         // given
-        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.getName()));
+        MenuGroupResponse 응답_메뉴그룹_치킨류 = 메뉴그룹_등록_요청_및_성공_확인(new MenuGroupRequest(메뉴그룹_치킨류.get().getName()));
 
         // given
         MenuProductRequests 메뉴상품_후라이드_양념치킨_두마리_세트 =
@@ -45,8 +46,8 @@ class MenuAcceptanceTest extends AcceptanceTest {
 
         // given
         MenuProductRequests 메뉴상품_후라이드_치킨_두마리_세트 =
-                MenuProductRequests.of(asList(응답_상품_후라이드_치킨.getId()),
-                        asList(2L));
+                MenuProductRequests.of(Collections.singletonList(응답_상품_후라이드_치킨.getId()),
+                        Collections.singletonList(2L));
 
         // given
         MenuRequest 요청_메뉴_후라이드_양념치킨_두마리_세트 =
