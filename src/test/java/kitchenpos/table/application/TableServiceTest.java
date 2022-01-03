@@ -1,16 +1,14 @@
 package kitchenpos.table.application;
 
 import kitchenpos.order.dao.OrderDao;
-import kitchenpos.table.dao.OrderTableDao;
 import kitchenpos.order.domain.OrderStatus;
-import kitchenpos.table.application.TableService;
+import kitchenpos.table.dao.OrderTableDao;
 import kitchenpos.table.domain.OrderTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -58,11 +56,11 @@ class TableServiceTest {
         verify(orderTableDao, times(1)).save(orderTable);
     }
 
-    Stream<Arguments> methodSource_create_성공() {
+    Stream<OrderTable> methodSource_create_성공() {
         return Stream.of(
-                Arguments.of(주문_테이블_조리_중인_주문_테이블),
-                Arguments.of(주문_테이블_식사_중인_주문_테이블),
-                Arguments.of(주문_테이블_계산_완료된_주문_테이블)
+                주문_테이블_조리_중인_주문_테이블.get(),
+                주문_테이블_식사_중인_주문_테이블.get(),
+                주문_테이블_계산_완료된_주문_테이블.get()
         );
     }
 
@@ -70,9 +68,9 @@ class TableServiceTest {
     void list_성공() {
         // given
         List<OrderTable> orderTables = asList(
-                주문_테이블_조리_중인_주문_테이블,
-                주문_테이블_식사_중인_주문_테이블,
-                주문_테이블_계산_완료된_주문_테이블
+                주문_테이블_조리_중인_주문_테이블.get(),
+                주문_테이블_식사_중인_주문_테이블.get(),
+                주문_테이블_계산_완료된_주문_테이블.get()
         );
 
         // when
@@ -87,13 +85,13 @@ class TableServiceTest {
     @Test
     void changeEmpty_예외_테이블_그룹_아이디가_존재() {
         // when
-        when(orderTableDao.findById(주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블.getId()))
-                .thenReturn(Optional.of(주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블));
+        when(orderTableDao.findById(주문_테이블_고객이_3명인_첫번째_테이블_ID))
+                .thenReturn(Optional.of(주문_테이블_고객이_3명인_첫번째_테이블.get()));
 
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableService.changeEmpty(주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블.getId(),
-                        주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블));
+                .isThrownBy(() -> tableService.changeEmpty(주문_테이블_고객이_3명인_첫번째_테이블_ID,
+                        주문_테이블_고객이_3명인_첫번째_테이블.get()));
     }
 
     @MethodSource("methodSource_changeEmpty_예외_완료되지_않은_주문")
@@ -111,22 +109,17 @@ class TableServiceTest {
                 .isThrownBy(() -> tableService.changeEmpty(orderTable.getId(), orderTable));
     }
 
-    Stream<Arguments> methodSource_changeEmpty_예외_완료되지_않은_주문() {
+    Stream<OrderTable> methodSource_changeEmpty_예외_완료되지_않은_주문() {
         return Stream.of(
-                Arguments.of(주문_테이블_조리_중인_주문_테이블),
-                Arguments.of(주문_테이블_식사_중인_주문_테이블)
+                주문_테이블_조리_중인_주문_테이블.get(),
+                주문_테이블_식사_중인_주문_테이블.get()
         );
     }
 
     @Test
     void changeEmpty_성공() {
         // given
-        OrderTable givenOrderTable = new OrderTable(
-                주문_테이블_계산_완료된_주문_테이블.getId(),
-                주문_테이블_계산_완료된_주문_테이블.getTableGroupId(),
-                주문_테이블_계산_완료된_주문_테이블.getNumberOfGuests(),
-                주문_테이블_계산_완료된_주문_테이블.isEmpty()
-        );
+        OrderTable givenOrderTable = 주문_테이블_계산_완료된_주문_테이블.get();
 
         OrderTable argumentOrderTable = new OrderTable(
                 null,
@@ -158,31 +151,26 @@ class TableServiceTest {
     void changeNumberOfGuests_예외_부적절한_테이블_고객수() {
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableService.changeNumberOfGuests(주문_테이블_고객_0명_미만의_테이블.getId(),
-                        주문_테이블_고객_0명_미만의_테이블));
+                .isThrownBy(() -> tableService.changeNumberOfGuests(주문_테이블_그룹_등록_예정인_고객이_0명인_빈_테이블_ID,
+                        주문_테이블_그룹_등록_예정인_고객이_0명인_빈_테이블.get()));
     }
 
     @Test
     void changeNumberOfGuests_예외_빈_테이블() {
 
         //when
-        when(orderTableDao.findById(주문_테이블_고객_3명의_빈_테이블.getId()))
-                .thenReturn(Optional.of(주문_테이블_고객_3명의_빈_테이블));
+        when(orderTableDao.findById(주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블_ID))
+                .thenReturn(Optional.of(주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블.get()));
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tableService.changeNumberOfGuests(주문_테이블_고객_3명의_빈_테이블.getId(),
-                        주문_테이블_고객_3명의_빈_테이블));
+                .isThrownBy(() -> tableService.changeNumberOfGuests(주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블_ID,
+                        주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블.get()));
     }
 
     @Test
     void changeNumberOfGuests_성공() {
         // given
-        OrderTable givenOrderTable = new OrderTable(
-                주문_테이블_식사_중인_주문_테이블.getId(),
-                주문_테이블_식사_중인_주문_테이블.getTableGroupId(),
-                주문_테이블_식사_중인_주문_테이블.getNumberOfGuests(),
-                주문_테이블_식사_중인_주문_테이블.isEmpty()
-        );
+        OrderTable givenOrderTable = 주문_테이블_식사_중인_주문_테이블.get();
 
         OrderTable argumentOrderTable = new OrderTable(
                 null,

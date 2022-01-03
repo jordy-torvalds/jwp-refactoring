@@ -2,14 +2,28 @@ package kitchenpos.order.fixture;
 
 import kitchenpos.table.domain.OrderTable;
 
+import java.util.function.Supplier;
+
+import static kitchenpos.table.fixture.TableGroupFixture.테이블_그룹_1번_ID;
+import static kitchenpos.table.fixture.TableGroupFixture.테이블_그룹_2번_ID;
+
 public class OrderTableFixture {
-    public static OrderTable 주문_테이블_조리_중인_주문_테이블 = new OrderTable(1L, null, 2, false);
-    public static OrderTable 주문_테이블_식사_중인_주문_테이블 = new OrderTable(2L, null, 3, false);
-    public static OrderTable 주문_테이블_계산_완료된_주문_테이블 = new OrderTable(3L, null, 5, false);
-    public static OrderTable 주문_테이블_1번쨰_빈_테이블 = new OrderTable(4L, null, 0, true);
-    public static OrderTable 주문_테이블_고객_0명_미만의_테이블 = new OrderTable(5L, null, -1, false);
-    public static OrderTable 주문_테이블_고객_3명의_빈_테이블 = new OrderTable(6L, null, 3, true);
-    public static OrderTable 주문_테이블_2번쨰_빈_테이블 = new OrderTable(7L, null, 3, true);
-    public static OrderTable 주문_테이블_2번_테이블_그룹에_속한_1번쨰_테이블 = new OrderTable(8L, 1L, 3, false);
-    public static OrderTable 주문_테이블_2번_테이블_그룹에_속한_2번쨰_테이블 = new OrderTable(9L, 1L, 3, false);
+    public static final Long 주문_테이블_조리_중인_주문_테이블_ID = 1L;
+    public static final Long 주문_테이블_식사_중인_주문_테이블_ID = 2L;
+    public static final Long 주문_테이블_계산_완료된_주문_테이블_ID = 3L;
+    public static final Long 주문_테이블_고객이_0명인_빈_상태가_아닌_테이블_ID = 4L;
+    public static final Long 주문_테이블_그룹_등록_예정인_고객이_0명인_빈_테이블_ID = 5L;
+    public static final Long 주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블_ID = 6L;
+
+    public static final Long 주문_테이블_고객이_3명인_첫번째_테이블_ID = 7L;
+    public static final Long 주문_테이블_고객이_3명인_두번째_테이블_ID = 8L;
+
+    public static Supplier<OrderTable> 주문_테이블_조리_중인_주문_테이블 = () -> new OrderTable(주문_테이블_조리_중인_주문_테이블_ID, null, 2, false);
+    public static Supplier<OrderTable> 주문_테이블_식사_중인_주문_테이블 = () -> new OrderTable(주문_테이블_식사_중인_주문_테이블_ID, null, 3, false);
+    public static Supplier<OrderTable> 주문_테이블_계산_완료된_주문_테이블 = () -> new OrderTable(주문_테이블_계산_완료된_주문_테이블_ID, null, 5, false);
+    public static Supplier<OrderTable> 주문_테이블_고객이_0명인_빈_상태가_아닌_테이블 = () -> new OrderTable(주문_테이블_고객이_0명인_빈_상태가_아닌_테이블_ID, null, -1, false);
+    public static Supplier<OrderTable> 주문_테이블_그룹_등록_예정인_고객이_0명인_빈_테이블 = () -> new OrderTable(주문_테이블_그룹_등록_예정인_고객이_0명인_빈_테이블_ID, null, 0, true);
+    public static Supplier<OrderTable> 주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블 = () -> new OrderTable(주문_테이블_그룹_등록_예정인_고객이_3명인_빈_테이블_ID, null, 3, true);
+    public static Supplier<OrderTable> 주문_테이블_고객이_3명인_첫번째_테이블 = () -> new OrderTable(주문_테이블_고객이_3명인_첫번째_테이블_ID, 테이블_그룹_2번_ID, 3, false);
+    public static Supplier<OrderTable> 주문_테이블_고객이_3명인_두번째_테이블 = () -> new OrderTable(주문_테이블_고객이_3명인_두번째_테이블_ID, 테이블_그룹_2번_ID, 3, false);
 }

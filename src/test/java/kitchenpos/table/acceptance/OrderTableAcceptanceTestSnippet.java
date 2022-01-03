@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import kitchenpos.order.dto.OrderRequest;
+import kitchenpos.table.domain.OrderTable;
 import kitchenpos.table.dto.*;
 import org.springframework.http.MediaType;
 
@@ -50,13 +51,13 @@ public class OrderTableAcceptanceTestSnippet {
         주문_테이블을_빈_테이블로_요청_했으나_유효하지_않은_요청으로_실패(id);
     }
 
-    public static void 조리중이거나_식사_중인_주문이_있는_테이블을_빈_테이블로_변경_요청_및_실패_확인(OrderRequest orderRequest, Long id) {
-        ExtractableResponse<Response> orderResponse = 주문_등록_요청(orderRequest);
-
-        주문이_등록됨(orderResponse, orderRequest);
-
-        주문_테이블을_빈_테이블로_요청_했으나_유효하지_않은_요청으로_실패(id);
-    }
+//    public static void 조리중이거나_식사_중인_주문이_있는_테이블을_빈_테이블로_변경_요청_및_실패_확인(OrderTable orderTable) {
+//        ExtractableResponse<Response> orderResponse = 주문_등록_요청(orderRequest);
+//
+//        주문이_등록됨(orderResponse, orderRequest);
+//
+//        주문_테이블을_빈_테이블로_요청_했으나_유효하지_않은_요청으로_실패(id);
+//    }
 
     public static void 주문_테이블을_빈_테이블로_요청_했으나_유효하지_않은_요청으로_실패(Long id) {
         ExtractableResponse<Response> response = 주문테이블_공석_상태_변경_요청(id, new EmptyTableRequest(true));
